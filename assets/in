@@ -30,6 +30,7 @@ username=$(jq -r '.source.username // ""' < $payload)
 password=$(jq -r '.source.password // ""' < $payload)
 repository="$(jq -r '.source.repository // ""' < $payload)"
 tag="$(jq -r '.source.tag // "latest"' < $payload)"
+tag_file="$(jq -r '.source.tag_file // ""' < $payload)"
 ca_certs=$(jq -r '.source.ca_certs // []' < $payload)
 client_certs=$(jq -r '.source.client_certs // []' < $payload)
 max_concurrent_downloads=$(jq -r '.source.max_concurrent_downloads // 3' < $payload)
@@ -69,7 +70,10 @@ if [ "$skip_download" = "false" ]; then
   docker_pull "$image_name"
 
   if [ "$save" = "true" ]; then
-    docker save -o ${destination}/image "$image_name"
+    if [ ! $tag_file = "" ]; then
+      docker save -o ${destination}/image "${repository}:$(cat ${tag_file})"
+    else
+      docker save -o ${destination}/image "$image_name"
   fi
 
   image_id="$(image_from_digest "$repository" "$digest")"
