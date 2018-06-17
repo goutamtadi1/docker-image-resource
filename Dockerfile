@@ -12,9 +12,10 @@ RUN set -e; for pkg in $(go list ./...); do \
 	done
 
 FROM alpine:edge AS resource
-RUN apk --no-cache add bash docker jq ca-certificates
+RUN apk --no-cache add bash curl docker jq ca-certificates
 COPY --from=builder /assets /opt/resource
 RUN mv /opt/resource/ecr-login /usr/local/bin/docker-credential-ecr-login
+RUN curl -LO https://storage.googleapis.com/container-structure-test/latest/container-structure-test-linux-amd64 && chmod +x container-structure-test-linux-amd64 && mv container-structure-test-linux-amd64 /usr/local/bin/container-structure-test
 
 FROM resource AS tests
 COPY --from=builder /tests /tests

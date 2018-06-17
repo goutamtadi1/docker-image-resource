@@ -98,6 +98,7 @@ cache=$(jq -r '.params.cache' < $payload)
 cache_tag=$(jq -r ".params.cache_tag // \"${tag_name}\"" < $payload)
 cache_from=$(jq -r '.params.cache_from // empty' < $payload)
 dockerfile=$(jq -r ".params.dockerfile // \"${build}/Dockerfile\"" < $payload)
+dockerfile_test="${dockerfile}test.yml"
 
 load_file=$(jq -r '.params.load_file // ""' < $payload)
 load_repository=$(jq -r '.params.load_repository // ""' < $payload)
@@ -236,6 +237,14 @@ image_id="$(image_from_tag "$repository" "$tag_name")"
 # so just parse it out
 
 # careful to not let 'tee' mask exit status
+
+if [ -f "${dockerfile_test}" ]; then
+set -x
+    container-structure-test test --image "${repository}:${tag_name}" --config ${dockerfile_test}
+else
+    echo "Dockerfiletest.yml is not found. Skipping Dockerfile tests"
+set +x
+fi
 
 {
   if ! docker push "${repository}:${tag_name}"; then
