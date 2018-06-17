@@ -7,7 +7,12 @@ resource_types:
       tag: latest
 
 resources:
-  - name: test-image
+  - name: docker-image-resource-example
+    type: git
+    source:
+      uri: https://github.com/goutamtadi1/docker-image-resource
+      branch: container-structure-tests
+  - name: build-test-image
     type: my-docker-image-resource
     source:
       repository: your/repo
@@ -17,6 +22,7 @@ resources:
 
 jobs:
   - name: build-test-image
+    plan:
     - get: docker-image-resource-example
     - put: build-test-image
       params:
