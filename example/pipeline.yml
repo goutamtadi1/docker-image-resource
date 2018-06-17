@@ -5,8 +5,6 @@ resource_types:
     source:
       repository: goutamtadi1/docker-image-resource
       tag: latest
-      username: ((username))
-      password: ((password))
 
 resources:
   - name: test-image
@@ -18,9 +16,9 @@ resources:
       password: ((password))
 
 jobs:
-  - name: build-image
+  - name: build-test-image
     - get: docker-image-resource-example
-    - put: test-image
+    - put: build-test-image
       params:
         build: docker-image-resource-example
         dockerfile: docker-image-resource-example/example/Dockerfile
