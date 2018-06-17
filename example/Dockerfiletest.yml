@@ -1,0 +1,15 @@
+schemaVersion: "2.0.0"
+
+commandTests:
+- name: "vim is installed"
+  command: "which"
+  args: ["vim"]
+  expectedOutput: ["/usr/bin/vim"]
+
+metadataTest:
+  labels:
+    - key: 'maintainer'
+      value: 'Goutam Tadi'
+globalEnvVars:
+  - key: "FOO"
+    value: "BAR"

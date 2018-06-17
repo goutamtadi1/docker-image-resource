@@ -1,0 +1,26 @@
+resource_types:
+  - name: my-docker-image-resource
+    type: docker-image
+    privileged: true
+    source:
+      repository: goutamtadi1/docker-image-resource
+      tag: latest
+      username: ((username))
+      password: ((password))
+
+resources:
+  - name: test-image
+    type: my-docker-image-resource
+    source:
+      repository: your/repo
+      tag: latest
+      username: ((username))
+      password: ((password))
+
+jobs:
+  - name: build-image
+    - get: docker-image-resource-example
+    - put: test-image
+      params:
+        build: docker-image-resource-example
+        dockerfile: docker-image-resource-example/example/Dockerfile
