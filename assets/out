@@ -98,7 +98,7 @@ cache=$(jq -r '.params.cache' < $payload)
 cache_tag=$(jq -r ".params.cache_tag // \"${tag_name}\"" < $payload)
 cache_from=$(jq -r '.params.cache_from // empty' < $payload)
 dockerfile=$(jq -r ".params.dockerfile // \"${build}/Dockerfile\"" < $payload)
-dockerfile_test="${dockerfile}test.yml"
+dockerfile_test="${dockerfile}_test.yml"
 
 load_file=$(jq -r '.params.load_file // ""' < $payload)
 load_repository=$(jq -r '.params.load_repository // ""' < $payload)
@@ -242,7 +242,7 @@ if [ -f "${dockerfile_test}" ]; then
 set -x
     container-structure-test test --image "${repository}:${tag_name}" --config ${dockerfile_test}
 else
-    echo "Dockerfiletest.yml is not found. Skipping Dockerfile tests"
+    echo "Dockerfile_test.yml is not found. Skipping Dockerfile tests"
 set +x
 fi
 

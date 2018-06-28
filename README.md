@@ -257,7 +257,7 @@ jobs:
 
 ## Running container-structure-tests
 
-Create a file `Dockerfiletest.yml` inside the directory as that of Dockerfile.
+Create a file `Dockerfile_test.yml` inside the directory as that of Dockerfile.
 We can push a tested Docker image, thus saving a separate task to test the Docker image.
 For more info on how to write tests yml file: https://github.com/GoogleContainerTools/container-structure-test
 
